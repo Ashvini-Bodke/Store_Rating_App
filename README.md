@@ -7,21 +7,21 @@ A full-stack web application where users can view stores and give ratings, while
 ## 🚀 Features
 
 ### 👤 Users
-- Register/Login system
-- View list of stores
+- Register and Login system
+- View list of all stores
 - Give ratings (1 to 5)
-- Update rating (one user per store)
+- Update rating (only one rating per store per user)
 
 ### 🏪 Store Owners
 - Login as OWNER
-- View their stores
-- See average ratings of their stores
-- See users who rated their stores
+- Manage their own stores
+- View average ratings of their stores
+- View users who rated their stores
 
 ### 🛠 Admin
-- Manage users
+- Manage users (create, update, delete)
 - Manage stores
-- View system data
+- View system-wide analytics and data
 
 ---
 
@@ -32,10 +32,10 @@ A full-stack web application where users can view stores and give ratings, while
 - Express.js
 - MySQL
 - JWT Authentication
-- bcrypt password hashing
+- bcrypt for password hashing
 
 ### Frontend
-- React (or your frontend tech)
+- React.js (Vite)
 - Axios
 
 ---
@@ -43,41 +43,85 @@ A full-stack web application where users can view stores and give ratings, while
 ## 📊 Database Structure
 
 ### Users Table
-- id
+- id (Primary Key)
 - name
 - email
 - password (hashed)
 - address
 - role (ADMIN / USER / OWNER)
 
+---
+
 ### Stores Table
-- id
+- id (Primary Key)
 - name
 - email
 - address
-- owner_id (FK → users.id)
+- owner_id (Foreign Key → users.id)
+
+---
 
 ### Ratings Table
-- id
-- user_id (FK → users.id)
-- store_id (FK → stores.id)
+- id (Primary Key)
+- user_id (Foreign Key → users.id)
+- store_id (Foreign Key → stores.id)
 - rating (1–5)
 
 ---
 
-## 🔐 Authentication Flow
+## 🔐 Authentication System
 
-- Users login using email & password
-- JWT token generated
-- Role-based access:
-  - ADMIN → full access
-  - OWNER → own stores only
-  - USER → rating access
+- Users register and login using email & password
+- JWT token generated on login
+- Token used for all protected routes
+- Role-based access control:
+  - ADMIN → full system access
+  - OWNER → only own stores access
+  - USER → can view stores and give ratings
 
 ---
 
 ## ⚙️ Setup Instructions
 
-### 1. Clone repo
+### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/Ashvini-Bodke/Store_Rating_App.git
+
+2. Move into project directory
+cd Store_Rating_App
+
+ 3. Setup Backend
+cd backend
+npm install
+
+4. Create .env file (inside backend folder)
+PORT=8080
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=store_rating
+
+JWT_SECRET=your_secret_key
+
+5. Run Backend Server
+   nodemon index.js
+6. Setup Frontend (Vite React)
+cd ../frontend
+npm install
+7. Run Frontend
+npm run dev  
+   
+---
+Application URLs
+Frontend → http://localhost:5173
+Backend → http://localhost:8080
+
+## 🔁 API Testing (Postman)
+
+All backend APIs are tested using Postman before frontend integration.
+
+### Authorization Header
+```http
+Authorization: Bearer <JWT_TOKEN>
+
